@@ -3,17 +3,48 @@ import Number from './components/Number';
 import styled from 'styled-components'
 import { useState } from 'react';
 
-const Main = styled.main`
+const Wrapper = styled.main`
+  display: flex;
+  background-color: #EFEFEF;
+  .svg2 {
+    position: absolute;
+    height: 100%;
+    left: 87px;
+  }
+  @media (max-width: 425px) {
+    flex-direction: column;
+    .back svg {
+      transform: rotate(90deg);
+      top: -157px;
+      left: -84px;
+    }
+  }
+`;
+const Retangulo = styled.span`
+  position: absolute;
+  height: 100%;
+  width: 190px;
+  background-color: ${props => props.color || "#6BEFA3"};
+
+  @media (max-width: 425px) {
+    transform: rotate(90deg);
+    top: -304px;
+  }
+`;
+const Main = styled.section`
+  min-width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 100vh;
-  background-color: #6BEFA3;
   padding: 92px 96px;
+  z-index: 2;
 
   select {
     width: 215.91px;
-    height: 45.2px;
+    padding: 1rem;
+    color: #333333;
+    border: 1px solid #fff;
+    border-radius: 0.5rem;
   }
   option {
     font-size: 15px;
@@ -49,30 +80,47 @@ const Main = styled.main`
     margin-left: 24px;
     color: #FFFFFF;
   }
+  .bottom_mobile {
+    display: none;
+  }
   .logo {
     position: relative;
   }
   .logo :first-child {
     position: absolute;
   }
-
-  /*
-  background-color: #8666EF;
-  background-color: #DD7AC6;
-  background-color: #FFAB64;
-  background-color: #5AAD7D;
-  background-color: #BFAF83;*/
-`;
-const Wrapper = styled.main`
-  display: flex;
-  justify-content: space-between;
-  min-height: 100vh;
-  background-color: #454545;
+  
+  @media (max-width: 425px) {
+    padding: 63px 71px;
+    align-items: center;
+    justify-content: unset;
+    select {
+      width: 233px;
+      margin-bottom: 4rem;
+    }
+    section {
+      flex-direction: column;
+    }
+    h1 {
+      margin-left: unset;
+      margin-bottom: 4rem;
+    }
+    .bottom {
+      display: none;
+    }
+    .bottom_mobile {
+      display: block;
+      font-size: 14px;
+      line-height: 17px;
+      color: #FFFFFF;
+    }
+  }
 `;
 
 function App() {
   
   const base = 'https://brainn-api-loterias.herokuapp.com/api/v1/';
+  const [id, setId] = useState(0)
   const [first, setFirst] = useState('MEGA-SENA')
   const [numb, setNumb] = useState(2359);
   const [info, setInfo] = useState('4531 – 07/04/2020')
@@ -86,26 +134,33 @@ function App() {
   if(error || data2.error || data3.error){
     return <p>Houve um problema...</p>
   }
+  const colors = ['#6BEFA3', '#8666EF', '#DD7AC6', '#FFAB64', '#5AAD7D', '#BFAF83'];
   
-  
-  function handleEditData (e:any) {
-
+  function handleEditData ({ e }: { e: any; }): void {
+    
     const hoje = new Date(data3.data.data);
     const dataFormatada = new Intl.DateTimeFormat("pt-BR").format(hoje);
-    console.log(data)
-    console.log(data2.data)
-    console.log(data3.data)
-    
-    setFirst(data[e].nome);
-    setNumb(data2.data[e].concursoId )
-    console.log(numb)
-    setInfo(`${ data2.data[e].concursoId } – ${dataFormatada}`);
+    const { nome } = data[e]
+    const { concursoId } = data2.data[e]
+
+    setId(e);
+    setFirst(nome);
+    setNumb(concursoId);
+    setInfo(`${ concursoId } – ${dataFormatada}`);
   }
 
   return (
     <Wrapper>
+
+      <div className="back">
+        <Retangulo color={colors[id]}></Retangulo>
+        <svg className='svg2' width="613" height="1080" viewBox="0 0 613 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M613 0C613 0 361.26 501.011 613 1080H0V0H613Z" fill={colors[id]}/>
+        </svg>
+      </div>
+
       <Main>
-        <select onChange={(e) => handleEditData(e.target.value)} name="loterias" id="loterias">
+        <select onChange={(e) => handleEditData({ e: e.target.value })} name="loterias" id="loterias">
           {data.map((item:any)=> {
             return <option key={item.id} value={item.id}>{ item.nome.toUpperCase() }</option>
           })}
@@ -121,12 +176,15 @@ function App() {
           </div>
           <h1>{ first.toUpperCase() }</h1>
         </section>
+          <p className='bottom_mobile'>CONCURSO Nº { numb }</p>
         <section className='bottom'>
           <p>CONCURSO</p>
           <h3>{info}</h3>
         </section>
       </Main>
+
       <Number num={data3.data.numeros}/>
+      
     </Wrapper>
   )
 }
