@@ -6,17 +6,17 @@ import { useState } from 'react';
 const Wrapper = styled.main`
   display: flex;
   background-color: #EFEFEF;
-  .svg2 {
+  .back svg {
     position: absolute;
     height: 100%;
-    left: 87px;
+    left: 65px;
   }
   @media (max-width: 425px) {
     flex-direction: column;
     .back svg {
       transform: rotate(90deg);
-      top: -157px;
-      left: -84px;
+      top: 10px;
+      left: -100px;
     }
   }
 `;
@@ -28,15 +28,17 @@ const Retangulo = styled.span`
 
   @media (max-width: 425px) {
     transform: rotate(90deg);
-    top: -304px;
+    top: -187px;
+    left: 87px;
   }
 `;
 const Main = styled.section`
-  min-width: 40%;
+  min-width: 36%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 92px 96px;
+  height: 100vh;
   z-index: 2;
 
   select {
@@ -94,6 +96,8 @@ const Main = styled.section`
     padding: 63px 71px;
     align-items: center;
     justify-content: unset;
+    height: unset;
+
     select {
       width: 233px;
       margin-bottom: 4rem;
@@ -154,7 +158,7 @@ function App() {
 
       <div className="back">
         <Retangulo color={colors[id]}></Retangulo>
-        <svg className='svg2' width="613" height="1080" viewBox="0 0 613 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="613" height="1080" viewBox="0 0 613 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M613 0C613 0 361.26 501.011 613 1080H0V0H613Z" fill={colors[id]}/>
         </svg>
       </div>
@@ -176,7 +180,7 @@ function App() {
           </div>
           <h1>{ first.toUpperCase() }</h1>
         </section>
-          <p className='bottom_mobile'>CONCURSO Nº { numb }</p>
+        <p className='bottom_mobile'>CONCURSO Nº { numb }</p>
         <section className='bottom'>
           <p>CONCURSO</p>
           <h3>{info}</h3>

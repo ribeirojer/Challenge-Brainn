@@ -46,7 +46,8 @@ const Wrapper = styled.section`
       line-height: 24px;
     }
     p {
-      margin: 2rem;
+      margin: 84px 2rem 2rem 2rem;
+      text-align: center;
     }
   }
 `;
