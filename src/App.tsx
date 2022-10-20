@@ -182,7 +182,7 @@ function App() {
         </section>
         <p className='bottom_mobile'>CONCURSO Nº { numb }</p>
         <section className='bottom'>
-          <p>CONCURSO</p>
+          <p data-testid={"pure_button"}>CONCURSO</p>
           <h3>{info}</h3>
         </section>
       </Main>
